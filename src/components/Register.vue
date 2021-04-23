@@ -9,7 +9,7 @@
               <v-toolbar-title>Register</v-toolbar-title>
             </v-toolbar>
             <v-card-text>
-              <v-form ref="form" @submit.prevent="submit">
+              <v-form v-model="isFormValid" ref="form" @submit.prevent="submit">
                 <v-text-field
                   id="name"
                   :rules="[rules.required, rules.length(3)]"
@@ -63,7 +63,7 @@
             </v-card-text>
             <v-card-actions>
               <v-spacer></v-spacer>
-              <v-btn color="primary" type="submit" @click="submit"
+              <v-btn color="primary" :disabled="!isFormValid" type="submit" @click="submit"
                 >Register</v-btn
               >
             </v-card-actions>
@@ -89,6 +89,7 @@ export default {
         password: "",
       },
       confirm_password: "",
+      isFormValid: false,
       showError: false,
       rules: {
         email: (v) => !!(v || "").match(/@/) || "Please enter a valid email",

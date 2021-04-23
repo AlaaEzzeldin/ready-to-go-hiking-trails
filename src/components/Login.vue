@@ -8,7 +8,7 @@
               <v-toolbar-title>Login</v-toolbar-title>
             </v-toolbar>
             <v-card-text>
-              <v-form ref="form" @submit.prevent="submit">
+              <v-form v-model="isFormValid" ref="form" @submit.prevent="submit">
                 <v-text-field
                   id="email"
                   v-model="form.email"
@@ -38,7 +38,7 @@
             <v-card-actions>
               <v-spacer></v-spacer>
               <v-btn color="primary" to="/register">Register</v-btn>
-              <v-btn color="primary" type="submit" @click="submit">Login</v-btn>
+              <v-btn color="primary" :disabled="!isFormValid" type="submit" @click="submit">Login</v-btn>
             </v-card-actions>
           </v-card>
         </v-flex>
@@ -59,6 +59,7 @@ export default {
         email: "",
         password: "",
       },
+      isFormValid: false,
       showError: false,
       checkbox: false,
       rules: {
@@ -77,7 +78,6 @@ export default {
     ...mapActions(["LogIn"]),
     async submit() {
       this.$refs.form.validate();
-
       const User = new FormData();
       User.append("username", this.form.email);
       User.append("password", this.form.password);
