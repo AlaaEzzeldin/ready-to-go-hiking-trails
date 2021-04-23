@@ -1,4 +1,3 @@
-
 <template>
   <div id="login">
     <v-container fill-height>
@@ -9,11 +8,11 @@
               <v-toolbar-title>Login</v-toolbar-title>
             </v-toolbar>
             <v-card-text>
-              <v-form ref="form">
+              <v-form ref="form" @submit.prevent="submit">
                 <v-text-field
                   id="email"
                   v-model="form.email"
-                  :rules="[rules.email, rules.length(10)]"
+                  :rules="[rules.email]"
                   prepend-icon="email"
                   name="email"
                   label="Email"
@@ -22,7 +21,6 @@
                 <v-text-field
                   id="password"
                   v-model="form.password"
-                  :rules="[rules.password, rules.length(6)]"
                   prepend-icon="lock"
                   name="password"
                   label="Password"
@@ -64,14 +62,6 @@ export default {
       checkbox: false,
       rules: {
         email: (v) => !!(v || "").match(/@/) || "Please enter a valid email",
-        length: (len) => (v) =>
-          (v || "").length >= len ||
-          `Invalid character length, required ${len}`,
-        password: (v) =>
-          !!(v || "").match(
-            /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*(_|[^\w])).+$/
-          ) ||
-          "Password must contain an upper case letter, a numeric character, and a special character",
         required: (v) => !!v || "This field is required",
       },
     };

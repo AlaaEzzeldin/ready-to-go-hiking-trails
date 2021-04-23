@@ -1,52 +1,41 @@
 <template>
-  <v-app>
-    <v-navigation-drawer v-model="sidebar" app>
-      <v-list>
-        <v-list-tile
-          v-for="item in menuItems"
-          :key="item.title"
-          :to="item.path"
-        >
-          <v-list-tile-action>
-            <v-icon>{{ item.icon }}</v-icon>
-          </v-list-tile-action>
-          <v-list-tile-content>{{ item.title }}</v-list-tile-content>
-        </v-list-tile>
-      </v-list>
-    </v-navigation-drawer>
-
-    <v-toolbar app>
-      <span class="hidden-sm-and-up">
-        <v-toolbar-side-icon @click="sidebar = !sidebar"> </v-toolbar-side-icon>
-      </span>
-      <v-toolbar-title>
-        <router-link to="/" tag="span" style="cursor: pointer">
-          {{ appTitle }}
-        </router-link>
-      </v-toolbar-title>
-      <v-spacer></v-spacer>
-      <v-toolbar-items class="hidden-xs-only">
-        <v-btn flat v-for="item in menuItems" :key="item.title" :to="item.path">
-          <v-icon left dark>{{ item.icon }}</v-icon>
-          {{ item.title }}
-        </v-btn>
-      </v-toolbar-items>
-    </v-toolbar>
-  </v-app>
+  <div id="nav">
+    <router-link to="/home">Home</router-link> |
+    <span v-if="isLoggedIn">
+      <a @click="logout">Logout</a>
+    </span>
+    <span v-else>
+      <router-link to="/register">Register</router-link> |
+      <router-link to="/">Login</router-link>
+    </span>
+  </div>
 </template>
-
 <script>
 export default {
-  data() {
-    return {
-      appTitle: "Awesome App",
-      sidebar: false,
-      menuItems: [
-        { title: "Home", path: "/home", icon: "home" },
-        { title: "Register", path: "/register", icon: "face" },
-        { title: "Login", path: "/login", icon: "lock_open" },
-      ],
-    };
-  },
-};
+  name: 'NavBar',
+  computed : {
+      isLoggedIn : function(){ return this.$store.getters.isAuthenticated}
+    },
+    methods: {
+      async logout (){
+        await this.$store.dispatch('LogOut')
+        this.$router.push('/login')
+      }
+    },
+}
 </script>
+<style>
+#nav {
+  padding: 30px;
+}
+#nav a {
+  font-weight: bold;
+  color: #2c3e50;
+}
+a:hover {
+  cursor: pointer;
+}
+#nav a.router-link-exact-active {
+  color: #42b983;
+}
+</style>

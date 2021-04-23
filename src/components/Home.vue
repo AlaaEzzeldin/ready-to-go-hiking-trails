@@ -1,16 +1,17 @@
 
 <template>
   <div>
-    <h1>Home</h1>
-    <p>here should be the list of the users!</p>
-
-
+    <UsersTable />
   </div>
 </template>
 
 <script>
+import UsersTable from "@/components/ShowUsers.vue";
 export default {
   name: "Home",
+  components: {
+    UsersTable,
+  },
 };
 </script>
 
