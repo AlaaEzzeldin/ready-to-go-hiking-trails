@@ -9,11 +9,11 @@
               <v-toolbar-title>Register</v-toolbar-title>
             </v-toolbar>
             <v-card-text>
-              <v-form ref="form">
+              <v-form ref="form" @submit.prevent="submit">
                 <v-text-field
                   id="name"
                   :rules="[rules.required, rules.length(3)]"
-                  v-model="form.name"
+                  v-model="form.first_name"
                   prepend-icon="person"
                   name="name"
                   label="Name"
@@ -76,13 +76,14 @@
 
 <script>
 import { mapActions } from "vuex";
+import USER from "@/store/User.js";
 export default {
   name: "Register",
   components: {},
   data() {
     return {
       form: {
-        name: "",
+        first_name: "",
         email: "",
         phone_number: "",
         password: "",
@@ -101,7 +102,6 @@ export default {
           "Password must contain an upper case letter, a numeric character, and a special character",
         required: (v) => !!v || "This field is required",
         isNumebr: (v) => isNaN(v) || "Not a valid numebr",
-        // confirm_password: (v)=>  (v || "")===this.password  || "doesnt match"
       },
     };
   },
@@ -117,10 +117,12 @@ export default {
     async submit() {
       this.$refs.form.validate();
       try {
-        console.log("here before the register done");
-
-        await this.Register(this.form);
-        console.log("here the register done");
+        const userObject = Object.create(USER);
+        userObject.email = this.form.email;
+        userObject.password = this.form.password;
+        userObject.phone_number = this.form.phone_number;
+        userObject.first_name = this.form.first_name;
+        this.Register(userObject);
         this.$router.push("/home");
         this.showError = false;
       } catch (error) {

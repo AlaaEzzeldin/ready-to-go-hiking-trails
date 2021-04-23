@@ -5,11 +5,11 @@ import Home from './components/Home.vue'
 import Register from './components/Register.vue'
 import Login from './components/Login.vue'
 import vuetify from './plugins/vuetify';
-import axios from 'axios';
+//import axios from 'axios';
 import store from './store';
 
-axios.defaults.withCredentials = true
-axios.defaults.baseURL = 'http://localhost:8080/';
+//axios.defaults.withCredentials = true
+//axios.defaults.baseURL = 'http://localhost:8080/';
 
 
 Vue.use(VueRouter);

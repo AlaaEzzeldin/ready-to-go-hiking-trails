@@ -21,6 +21,7 @@
                 <v-text-field
                   id="password"
                   v-model="form.password"
+                  :rules="[rules.required]"
                   prepend-icon="lock"
                   name="password"
                   label="Password"
@@ -78,7 +79,7 @@ export default {
       this.$refs.form.validate();
 
       const User = new FormData();
-      User.append("username", this.form.username);
+      User.append("username", this.form.email);
       User.append("password", this.form.password);
       try {
         await this.LogIn(User);

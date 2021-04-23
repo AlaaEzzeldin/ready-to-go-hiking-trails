@@ -1,21 +1,26 @@
-import axios from 'axios';
+//import axios from 'axios';
 
 const state = {
     users: []
 }
 
 const getters = {
-    allUsers: (state) => state.users
+    stateUsers: (state) => state.users
 }
 
 const actions = {
-    async GetUsers({ commit }) {
-        let response = await axios.get('users')
-        commit('setUsers', response.data)
-    },
+
+    async addUser({ commit }, user) {
+        await commit('addUsers', user)
+    }
 };
 const mutations = {
-
+    setUsers(state, users) {
+        state.users = users
+    },
+    addUsers(state, user) {
+        state.users.push(user)
+    }
 };
 export default {
     state,

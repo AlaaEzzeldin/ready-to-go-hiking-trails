@@ -11,9 +11,9 @@
     </v-card-title>
     <v-data-table
       :headers="headers"
-      :items="users"
+      :items="stateUsers"
       :search="search"
-      :sort-by="['userID', 'name']"
+      :sort-by="['email', 'name']"
       :sort-desc="[false, true]"
       multi-sort
       class="elevation-1"
@@ -23,7 +23,7 @@
 
 
 <script>
-import { mapGetters, mapActions } from "vuex";
+import { mapGetters } from "vuex";
 export default {
   name: "UsersTable",
   data() {
@@ -32,23 +32,23 @@ export default {
       search: "",
       headers: [
         {
-          text: "userID",
+          text: "email",
           align: "start",
           filterable: true,
-          value: "userID",
+          value: "email",
         },
-        { text: "name", value: "name" },
-        { text: "email", value: "email" },
+        { text: "name", value: "first_name" },
+        //{ text: "email", value: "email" },
         { text: "phone number", value: "phone_number" },
       ],
     };
   },
-  methods: {
-   ...mapActions(["GetUsers"]),
 
+  methods: {
+    //    ...mapActions(["GetUsers"]),
   },
   computed: {
-    ...mapGetters({Users: "stateUsers"}),
-  }
+    ...mapGetters(["stateUsers"]),
+  },
 };
 </script>
