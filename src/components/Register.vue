@@ -121,7 +121,7 @@ export default {
 
         await this.Register(this.form);
         console.log("here the register done");
-        this.$router.push("/login");
+        this.$router.push("/home");
         this.showError = false;
       } catch (error) {
         this.showError = true;

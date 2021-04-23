@@ -1,6 +1,6 @@
 import axios from 'axios';
 const state = {
-    user: null,
+    user: null
 
 };
 const getters = {
@@ -11,14 +11,14 @@ const actions = {
     async Register({dispatch}, form) {
         await axios.post('register', form)
         let UserForm = new FormData()
-        UserForm.append('username', form.username)
+        UserForm.append('email', form.email)
         UserForm.append('password', form.password)
         await dispatch('LogIn', UserForm)
       },
 
       async LogIn({commit}, User) {
         await axios.post('login', User)
-        await commit('setUser', User.get('username'))
+        await commit('setUser', User.get('email'))
       },
 
       async LogOut({commit}){
@@ -27,12 +27,11 @@ const actions = {
       }
 };
 const mutations = {
-    setUser(state, username){
-        state.user = username
+    setUser(state, email){
+        state.user = email
     },
     LogOut(state){
         state.user = null
-        state.posts = null
     },
 };
 export default {
