@@ -18,10 +18,8 @@
 
 
 <script>
-
 export default {
-  components: {
-  },
+
 
   data(){
     return{
@@ -30,3 +28,4 @@ export default {
   }
 };
 </script>
+

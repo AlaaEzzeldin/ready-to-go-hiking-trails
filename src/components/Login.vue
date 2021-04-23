@@ -9,10 +9,10 @@
               <v-toolbar-title>Login</v-toolbar-title>
             </v-toolbar>
             <v-card-text>
-              <v-form ref="form" v-model="valid" lazy-validation>
+              <v-form ref="form">
                 <v-text-field
                   id="email"
-                  v-model="email"
+                  v-model="form.email"
                   :rules="[rules.email, rules.length(10)]"
                   prepend-icon="email"
                   name="email"
@@ -21,7 +21,7 @@
                 ></v-text-field>
                 <v-text-field
                   id="password"
-                  v-model="password"
+                  v-model="form.password"
                   :rules="[rules.password, rules.length(6)]"
                   prepend-icon="lock"
                   name="password"
@@ -39,7 +39,7 @@
             <v-card-actions>
               <v-spacer></v-spacer>
               <v-btn color="primary" to="/register">Register</v-btn>
-              <v-btn color="primary" @click="submit">Login</v-btn>
+              <v-btn color="primary" type="submit" @click="submit">Login</v-btn>
             </v-card-actions>
           </v-card>
         </v-flex>
@@ -50,32 +50,53 @@
 
 
 <script>
+import { mapActions } from "vuex";
 export default {
-  data: () => ({
-    email: "",
-    password: "",
-    rules: {
-      email: (v) => !!(v || "").match(/@/) || "Please enter a valid email",
-      length: (len) => (v) =>
-        (v || "").length >= len || `Invalid character length, required ${len}`,
-      password: (v) =>
-        !!(v || "").match(
-          /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*(_|[^\w])).+$/
-        ) ||
-        "Password must contain an upper case letter, a numeric character, and a special character",
-      required: (v) => !!v || "This field is required",
-    },
-  }),
-
+  name: "Login",
+  components: {},
+  data() {
+    return {
+      form: {
+        email: "",
+        password: "",
+      },
+      showError: false,
+      checkbox: false,
+      rules: {
+        email: (v) => !!(v || "").match(/@/) || "Please enter a valid email",
+        length: (len) => (v) =>
+          (v || "").length >= len ||
+          `Invalid character length, required ${len}`,
+        password: (v) =>
+          !!(v || "").match(
+            /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*(_|[^\w])).+$/
+          ) ||
+          "Password must contain an upper case letter, a numeric character, and a special character",
+        required: (v) => !!v || "This field is required",
+      },
+    };
+  },
   methods: {
-    submit() {
-      this.$refs.form.validate();
-    },
     reset() {
       this.$refs.form.reset();
     },
     resetValidation() {
       this.$refs.form.resetValidation();
+    },
+    ...mapActions(["LogIn"]),
+    async submit() {
+      this.$refs.form.validate();
+
+      const User = new FormData();
+      User.append("username", this.form.username);
+      User.append("password", this.form.password);
+      try {
+        await this.LogIn(User);
+        this.$router.push("/home");
+        this.showError = false;
+      } catch (error) {
+        this.showError = true;
+      }
     },
   },
 };

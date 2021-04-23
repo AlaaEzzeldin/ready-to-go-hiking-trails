@@ -2,7 +2,7 @@
 <template>
   <div>
     <h1>Home</h1>
-    <p>This is the home page!</p>
+    <p>here should be the list of the users!</p>
 
 
   </div>

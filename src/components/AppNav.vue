@@ -1,43 +1,52 @@
 <template>
-  <nav class="navbar navbar-expand-sm navbar-light navbar-jw">
-    <button
-      class="navbar-toggler"
-      type="button"
-      data-toggle="collapse"
-      data-target="#appnav"
-      aria-controls="appnav"
-      aria-expanded="false"
-      aria-label="Toggle navigation"
-    >
-      <span class="navbar-toggler-icon"></span>
-    </button>
-
-    <a class="navbar-brand" href="#">
-    </a>
-
-    <div class="collapse navbar-collapse" id="appnav">
-      <div class="nav navbar-nav">
-        <router-link
-          to="home"
-          class="nav-item nav-link"
-          active-class="active"
-          exact
+  <v-app>
+    <v-navigation-drawer v-model="sidebar" app>
+      <v-list>
+        <v-list-tile
+          v-for="item in menuItems"
+          :key="item.title"
+          :to="item.path"
         >
-          Home
+          <v-list-tile-action>
+            <v-icon>{{ item.icon }}</v-icon>
+          </v-list-tile-action>
+          <v-list-tile-content>{{ item.title }}</v-list-tile-content>
+        </v-list-tile>
+      </v-list>
+    </v-navigation-drawer>
+
+    <v-toolbar app>
+      <span class="hidden-sm-and-up">
+        <v-toolbar-side-icon @click="sidebar = !sidebar"> </v-toolbar-side-icon>
+      </span>
+      <v-toolbar-title>
+        <router-link to="/" tag="span" style="cursor: pointer">
+          {{ appTitle }}
         </router-link>
-        <router-link
-          to="/"
-          class="nav-item nav-link"
-          active-class="active"
-          exact
-        >
-          Login
-        </router-link>
-      </div>
-    </div>
-  </nav>
+      </v-toolbar-title>
+      <v-spacer></v-spacer>
+      <v-toolbar-items class="hidden-xs-only">
+        <v-btn flat v-for="item in menuItems" :key="item.title" :to="item.path">
+          <v-icon left dark>{{ item.icon }}</v-icon>
+          {{ item.title }}
+        </v-btn>
+      </v-toolbar-items>
+    </v-toolbar>
+  </v-app>
 </template>
 
 <script>
-export default {};
+export default {
+  data() {
+    return {
+      appTitle: "Awesome App",
+      sidebar: false,
+      menuItems: [
+        { title: "Home", path: "/home", icon: "home" },
+        { title: "Register", path: "/register", icon: "face" },
+        { title: "Login", path: "/login", icon: "lock_open" },
+      ],
+    };
+  },
+};
 </script>
