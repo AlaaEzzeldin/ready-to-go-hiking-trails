@@ -63,7 +63,11 @@
             </v-card-text>
             <v-card-actions>
               <v-spacer></v-spacer>
-              <v-btn color="primary" :disabled="!isFormValid" type="submit" @click="submit"
+              <v-btn
+                color="primary"
+                :disabled="!isFormValid"
+                type="submit"
+                @click="submit"
                 >Register</v-btn
               >
             </v-card-actions>
@@ -114,20 +118,21 @@ export default {
       this.$refs.form.resetValidation();
     },
 
-    ...mapActions(["Register"]),
+    ...mapActions(["Register", "AddUser"]),
     async submit() {
       this.$refs.form.validate();
+      const userObject = Object.create(USER);
+      userObject.email = this.form.email;
+      userObject.password = this.form.password;
+      userObject.phone_number = this.form.phone_number;
+      userObject.first_name = this.form.first_name;
       try {
-        const userObject = Object.create(USER);
-        userObject.email = this.form.email;
-        userObject.password = this.form.password;
-        userObject.phone_number = this.form.phone_number;
-        userObject.first_name = this.form.first_name;
-        this.Register(userObject);
+        await this.Register(userObject);
+        await this.AddUser(userObject);
         this.$router.push("/home");
         this.showError = false;
-      } catch (error) {
-        this.showError = true;
+      } catch (e) {
+        console.error("register is not succeded" + e);
       }
     },
   },

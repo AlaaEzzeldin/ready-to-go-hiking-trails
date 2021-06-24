@@ -85,8 +85,8 @@ export default {
         await this.LogIn(User);
         this.$router.push("/home");
         this.showError = false;
-      } catch (error) {
-        this.showError = true;
+      } catch (e) {
+          console.error("register doesn't succeed"+e);
       }
     },
   },

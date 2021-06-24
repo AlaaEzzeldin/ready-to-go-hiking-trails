@@ -1,6 +1,4 @@
 //import axios from 'axios';
-import { mapActions } from "vuex";
-//import USER from "@/store/User"
 const state = {
   user: null
 
@@ -11,27 +9,13 @@ const getters = {
 };
 const actions = {
 
-  ...mapActions({ users: "stateUsers" }),
-  // async Register({dispatch}, UserForm) {
-  //     //await axios.post('register', form)
-  //     await dispatch('LogIn', UserForm)
-  //     await dispatch('adduser',UserForm)
-  //     //await dispatch('addUser', UserForm)
-  //   },
-
-  async Register({ dispatch }, userObject) 
-  {
+  async Register({ dispatch }, userObject) {
+    //await axios.post('register', userObject)
     await dispatch('LogIn', userObject)
-    await dispatch('adduser', userObject)
-    //await dispatch('addUser', UserForm)
-
   },
   async LogIn({ commit }, User) {
     //await axios.post('login', User)
     await commit('setUser', User)
-  },
-  async adduser({ dispatch }, ObjectUser) {
-    await dispatch('addUser', ObjectUser)
   },
   async LogOut({ commit }) {
     let user = null
@@ -39,6 +23,7 @@ const actions = {
   }
 };
 const mutations = {
+
   setUser(state, User) {
     state.user = User
   },

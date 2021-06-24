@@ -1,16 +1,16 @@
 
 <template>
   <div>
-    <UsersTable />
+    <hikingTrailsTable />
   </div>
 </template>
 
 <script>
-import UsersTable from "@/components/ShowUsers.vue";
+import hikingTrailsTable from "@/components/hikingTrailsTable.vue";
 export default {
   name: "Home",
   components: {
-    UsersTable,
+    hikingTrailsTable,
   },
 };
 </script>

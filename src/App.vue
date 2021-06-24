@@ -9,9 +9,6 @@
         rel="stylesheet"
       />
     </head>
-    <!-- <router-link to="/home">Home</router-link>
-    <router-link to="/">Login</router-link>
-    <router-link to="/register">Register</router-link> -->
        <NavBar />
     <router-view/>
   </v-app>

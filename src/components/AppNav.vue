@@ -1,12 +1,13 @@
 <template>
   <div id="nav">
-    <router-link to="/home">Home</router-link> |
+    <router-link to="/home">Hiking Trails</router-link> |
     <span v-if="isLoggedIn">
       <a @click="logout">Logout</a>
     </span>
     <span v-else>
       <router-link to="/register">Register</router-link> |
-      <router-link to="/">Login</router-link>
+      <router-link to="/">Login</router-link>|
+      <router-link to="/weather">Weather</router-link> 
     </span>
   </div>
 </template>
