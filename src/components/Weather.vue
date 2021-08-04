@@ -1,15 +1,10 @@
-
 <template>
   <div class="d-flex justify-content-center">
     <div v-if="info" class="card weather p-5">
-      <h1>{{ info.name }}, {{ info.sys.country }}</h1>
-      <h2>
-        <span>Lon:</span> {{ info.coord.lon }} <span>Lat:</span>
-        {{ info.coord.lat }}
-      </h2>
-      <h2><span>Wind speed:</span> {{ info.wind.speed }}mph</h2>
-      <h2><span>Wind deg:</span> {{ info.wind.deg }}&deg;</h2>
-      <h2><span>Pressure:</span> {{ info.main.pressure }}</h2>
+      <h4>{{ info.name }}, {{ info.sys.country }}</h4>
+      <h4><span>Wind speed:</span> {{ info.wind.speed }}mph</h4>
+      <h4><span>feals like:</span> {{ (info.main.feels_like - 273.15).toFixed(2) }}</h4>
+      <h4><span>weather description:</span> {{ info.weather[0].description }}</h4>
     </div>
   </div>
 </template>
@@ -20,7 +15,7 @@ import axios from "axios";
 
 export default {
   name: "Weather",
-  props:['location'],
+   props:['location'],
   data() {
     return {
       info: null,
