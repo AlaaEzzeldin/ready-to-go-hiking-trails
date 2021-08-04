@@ -20,11 +20,9 @@
       multi-sort
       class="elevation-1"
     >
-      
-      <template v-slot:[`item.weather`]="{ item }">
-      <Weather :location="getCity(item.city)"> </Weather> 
+      <template v-slot:[`item.temp`]="{ item }">
+        <Weather :location="getCity(item.city)"> </Weather>
       </template>
-      
     </v-data-table>
     <!-- <Weather v-for="(hike, i) in getHikes" :key="i" :location="hike.city"></Weather> -->
   </v-card>
@@ -37,16 +35,17 @@ import Weather from "@/components/Weather.vue";
 export default {
   name: "hikesTable",
   components: {
-   Weather,
+    Weather,
   },
   data() {
     return {
       search: "",
       headers: [
-        { text: "HikeID", value: "hikeId" },
+        { text: "HikeID", value: "id" },
         { text: "Hiking trail ", value: "trail" },
         { text: "city", value: "city" },
-        { text: "weather", value: "weather" },
+        { text: "Temperature feals like", value: "temp" },
+        { text: "description", value: "description" },
       ],
       info: null,
       apiKey: "7e9fcc5fa8d03177f95f110fd1c05c08",
@@ -64,7 +63,7 @@ export default {
   methods: {
     getCity(city) {
       if (city) {
-        console.log("city",city.split(",", 1)[0])
+        console.log("city", city.split(",", 1)[0]);
         return city.split(",")[0];
       }
     },

@@ -7,7 +7,7 @@
     <span v-else>
       <router-link to="/register">Register</router-link> |
       <router-link to="/">Login</router-link>|
-      <router-link to="/weather">Weather</router-link> 
+      <router-link to="/location">location</router-link> 
     </span>
   </div>
 </template>

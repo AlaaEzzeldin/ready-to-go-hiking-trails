@@ -1,10 +1,10 @@
 <template>
   <div class="d-flex justify-content-center">
     <div v-if="info" class="card weather p-5">
-      <h4>{{ info.name }}, {{ info.sys.country }}</h4>
-      <h4><span>Wind speed:</span> {{ info.wind.speed }}mph</h4>
-      <h4><span>feals like:</span> {{ (info.main.feels_like - 273.15).toFixed(2) }}</h4>
+      <h4><span></span> {{ (info.main.feels_like - 273.15).toFixed(2) }} °C</h4>
+     <!--       <h4><span>Wind speed:</span> {{ info.wind.speed }}mph</h4>
       <h4><span>weather description:</span> {{ info.weather[0].description }}</h4>
+      -->
     </div>
   </div>
 </template>
@@ -33,4 +33,14 @@ export default {
       .then((response) => (this.info = response.data));
   },
 };
+    // axios
+    //   .get(
+    //     "http://api.openweathermap.org/data/2.5/weather?lat=" +
+    //       "47.49237" +
+    //       "&lon="+
+    //       "11.08611"+
+    //       "&appid=" +
+    //       this.apiKey
+    //   )
 </script>
+
