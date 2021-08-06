@@ -59,10 +59,11 @@
       :sort-by="['HikeId', 'temperature']"
       class="elevation-1"
     >
-      <!--  <template v-slot:[`item.temp`]="{ item }">
-        <h4> <span></span>  {{ (getWeather(item.city).main.feels_like - 273.15).toFixed(2) }} °C </h4>
+      <template v-slot:[`item.temp`]="{ item }">
+        <h4>
+          {{ (item.weather.main.feels_like - 273.15).toFixed(2) }} °C
+        </h4>
       </template>
-      _-->
     </v-data-table>
   </v-card>
 </template>
@@ -70,12 +71,11 @@
 <script>
 import { mapGetters } from "vuex";
 //import Weather from "@/components/Weather.vue";
-import axios from "axios";
 
 export default {
   name: "hikesTable",
   components: {
-    // Weather,
+   // Weather,
   },
   data() {
     return {
@@ -84,15 +84,13 @@ export default {
         { text: "HikeID", value: "id" },
         { text: "Hiking trail ", value: "trail" },
         { text: "city", value: "city" },
-        { text: "Temperature feals like", value: "temp" },
+        { text: "Temperature feals like", value: "temp"},
         {
           text: "description",
-          value: "description",
+          value: "weather.weather[0].description",
           filter: this.descriptionFilter,
-        },
+        }
       ],
-      info: null,
-      apiKey: "7e9fcc5fa8d03177f95f110fd1c05c08",
 
       // date picker
       date: new Date(Date.now() - new Date().getTimezoneOffset() * 60000)
@@ -108,37 +106,22 @@ export default {
   computed: {
     ...mapGetters(["getHikes"]),
     getUniqueDescriptions() {
-      return ["All", ...new Set(this.getHikes.map((hike) => hike.description))];
+      return ["All", ...new Set(this.getHikes.map((hike) => hike.weather.weather[0].description))];
     },
   },
 
   created() {
     this.$store.dispatch("loadHikes");
   },
-  methods: {
-    getCity(city) {
-      if (city) {
-        console.log("city", city.split(",", 1)[0]);
-        return city.split(",")[0];
-      }
-    },
+  
     descriptionFilter(value) {
-      if (!this.descriptionFilterValue || this.descriptionFilterValue=="All") {
+      if (
+        !this.descriptionFilterValue ||
+        this.descriptionFilterValue == "All"
+      ) {
         return true;
       }
       return value === this.descriptionFilterValue;
     },
-    async getWeather(location) {
-      await axios
-        .get(
-          "http://api.openweathermap.org/data/2.5/weather?q=" +
-            location +
-            "&appid=" +
-            this.apiKey
-        )
-        .then((response) => (this.info = response.data));
-      return this.info;
-    },
-  },
 };
 </script>
