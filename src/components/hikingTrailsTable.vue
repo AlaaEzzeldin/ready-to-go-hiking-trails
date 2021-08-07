@@ -1,5 +1,5 @@
 <template>
-  <v-card>
+  <v-card v-if="getHikes">
     <v-card-title>
       <v-row>
         <v-col cols>
@@ -29,6 +29,7 @@
             <template v-slot:activator="{ on, attrs }">
               <v-text-field
                 v-model="date"
+                :value="computedDateFormattedMomentjs"
                 label="Please select your trip date whitin 7 days only"
                 persistent-hint
                 prepend-icon="mdi-calendar"
@@ -42,7 +43,14 @@
               <v-btn text color="primary" @click="modal = false">
                 Cancel
               </v-btn>
-              <v-btn text color="primary" @click="$refs.dialog.save(date)">
+              <v-btn
+                text
+                color="primary"
+                @click="
+                  diffDate();
+                  $refs.dialog.save(date);
+                "
+              >
                 OK
               </v-btn>
             </v-date-picker>
@@ -50,19 +58,26 @@
         </v-col>
       </v-row>
     </v-card-title>
+ 
     <v-data-table
       :headers="headers"
       :items="getHikes"
-      :items-per-page="100"
-      item-key="HikeId"
+      :items-per-page="15"
+      item-key="id"
       :search="search"
-      :sort-by="['HikeId', 'temperature']"
+      :sort-by="['temp']"
+      :sort-desc="[true]"
+      multi-sort
       class="elevation-1"
     >
       <template v-slot:[`item.temp`]="{ item }">
-        <h4>
-          {{ (item.weather.main.feels_like - 273.15).toFixed(2) }} °C
-        </h4>
+        {{
+          (item.weather.daily[selectedDate].feels_like.day - 273.15).toFixed(2)
+        }}
+        °C
+      </template>
+      <template v-slot:[`item.description`]="{ item }">
+        {{ item.weather.daily[selectedDate].weather[0].description }}
       </template>
     </v-data-table>
   </v-card>
@@ -70,13 +85,11 @@
 
 <script>
 import { mapGetters } from "vuex";
-//import Weather from "@/components/Weather.vue";
-
+import moment from "moment";
+import { format, parseISO } from "date-fns";
 export default {
   name: "hikesTable",
-  components: {
-   // Weather,
-  },
+  components: {},
   data() {
     return {
       search: "",
@@ -84,36 +97,54 @@ export default {
         { text: "HikeID", value: "id" },
         { text: "Hiking trail ", value: "trail" },
         { text: "city", value: "city" },
-        { text: "Temperature feals like", value: "temp"},
+        {
+          text: "Temperature feals like",
+          value: "temp",
+        },
         {
           text: "description",
-          value: "weather.weather[0].description",
+          value: "description",
           filter: this.descriptionFilter,
-        }
+        },
       ],
-
-      // date picker
-      date: new Date(Date.now() - new Date().getTimezoneOffset() * 60000)
-        .toISOString()
-        .substr(0, 10),
+      date: format(parseISO(new Date().toISOString()), "yyyy-MM-dd"),
       menu: false,
       modal: false,
-
-      // filter
       descriptionFilterValue: null,
+      outOfBound: false,
     };
   },
   computed: {
     ...mapGetters(["getHikes"]),
     getUniqueDescriptions() {
-      return ["All", ...new Set(this.getHikes.map((hike) => hike.weather.weather[0].description))];
+      return [
+        "All",
+        ...new Set(
+          this.getHikes.map(
+            (hike) =>
+              hike.weather.daily[this.selectedDate].weather[0].description
+          )
+        ),
+      ];
+    },
+    computedDateFormattedMomentjs() {
+      return this.date ? moment(this.date).format("dddd, MMMM Do YYYY") : "";
+    },
+    selectedDate() {
+      let start = moment();
+      let end = moment(this.date);
+      let duration = moment.duration(end.diff(start));
+      let days = duration.asDays();
+      const diff = Math.ceil(days);
+      if (diff <= 0 || diff > 7) return 0;
+      else return diff;
     },
   },
 
   created() {
     this.$store.dispatch("loadHikes");
   },
-  
+  methods: {
     descriptionFilter(value) {
       if (
         !this.descriptionFilterValue ||
@@ -123,5 +154,14 @@ export default {
       }
       return value === this.descriptionFilterValue;
     },
+    diffDate() {
+      let start = moment();
+      let end = moment(this.date);
+      let duration = moment.duration(end.diff(start));
+      let days = duration.asDays();
+      const diff = Math.ceil(days);
+      if (diff > 7) this.outOfBound = true;
+    },
+  },
 };
 </script>

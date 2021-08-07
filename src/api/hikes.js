@@ -7,18 +7,18 @@ export default {
     },
 
     show( id ){
-        return axios.get( 'posts/'+id );
+        return axios.get( 'http://localhost:3001/hikes/'+id );
     },
 
     update( id, data ){
-        return axios.put( 'posts/'+id, data );
+        return axios.put( 'http://localhost:3001/hikes/'+id, data );
     },
 
     create( data ){
-        return axios.post( 'posts/', data );
+        return axios.post( 'http://localhost:3001/hikes/', data );
     },
 
     delete( id ){
-        return axios.delete( 'posts/' + id )
+        return axios.delete( 'http://localhost:3001/hikess/' + id )
     }
 }
