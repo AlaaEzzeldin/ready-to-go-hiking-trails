@@ -65,7 +65,6 @@
       :items-per-page="15"
       item-key="id"
       :search="search"
-      :sort-by="['temp']"
       :sort-desc="[true]"
       multi-sort
       class="elevation-1"
